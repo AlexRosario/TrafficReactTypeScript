@@ -5,25 +5,24 @@ type TrafficLightState = {
 	lightState: number;
 };
 
-export class ClassTrafficLight extends Component<object, TrafficLightState> {
+export class ClassTrafficLight extends Component<
+	Record<string, never>,
+	TrafficLightState
+> {
 	state: TrafficLightState = {
 		lightState: 0,
 	};
 
 	lightChange = (): void => {
 		this.setState(({ lightState }) => ({
-			lightState: lightState < 2 ? lightState + 1 : 0,
+			lightState: lightState + 1, //Did one better. Moved the index matching logic to getColor so that lightState now also preserves number of clicks.
 		}));
 	};
 
 	getColor = (index: number): string => {
 		const { lightState } = this.state;
-		if (
-			(index === 0 && lightState === 0) ||
-			(index === 1 && lightState === 1) ||
-			(index === 2 && lightState === 2)
-		) {
-			return index === 0 ? "red" : index === 1 ? "yellow" : "green";
+		if (lightState % 3 === index) {
+			return ["green", "yellow", "red"][index];
 		}
 		return "black";
 	};
@@ -31,7 +30,7 @@ export class ClassTrafficLight extends Component<object, TrafficLightState> {
 	render() {
 		return (
 			<div className="traffic-light-box">
-				<h2>Class-based Traffic Light</h2>
+				<h2>Class Traffic Light</h2>
 				<div className="traffic-light">
 					<div className={`circle ${this.getColor(0)}`}></div>
 					<div className={`circle ${this.getColor(1)}`}></div>

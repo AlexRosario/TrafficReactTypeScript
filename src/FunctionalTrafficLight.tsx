@@ -5,18 +5,12 @@ export const FunctionalTrafficLight = () => {
 	const [lightState, setLightState] = useState<number>(0);
 
 	const lightChange = (): void => {
-		setLightState((lightState) =>
-			lightState < 2 ? lightState + 1 : (lightState = 0)
-		);
+		setLightState((lightState) => (lightState += 1)); //Did one better. Moved the index matching logic to getColor so that lightState now also preserves number of clicks.
 	};
 
 	const getColor = (index: number): string => {
-		if (
-			(index === 0 && lightState === 0) ||
-			(index === 1 && lightState === 1) ||
-			(index === 2 && lightState === 2)
-		) {
-			return index === 0 ? "red" : index === 1 ? "yellow" : "green";
+		if (lightState % 3 === index) {
+			return ["green", "red", "yellow"][index];
 		}
 		return "black";
 	};
